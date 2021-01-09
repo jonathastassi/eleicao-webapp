@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "eleicao-webapp": {
+      "hosting": {
+        "eleicao-webapp": [
+          "eleicao-webapp"
+        ]
+      }
+    }
+  }
+}

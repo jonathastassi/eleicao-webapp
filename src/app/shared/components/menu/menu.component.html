@@ -1,0 +1,32 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">Eleição Webapp</a>
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" routerLinkActive="active">
+          <a [routerLink]="[ '/p/initial' ]" class="nav-link">Início</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a [routerLink]="[ '/p/poll-place' ]" class="nav-link">Local de Votação</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" *ngIf="auth.user | async as user;">
+          <a [routerLink]=" [ '/admin/election-configuration' ]" class="nav-link">Configuração da Eleição</a>
+        </li>
+      </ul>
+
+      <form class="form-inline" *ngIf="auth.user | async as user; else showLogin">
+        <span class="navbar-text">{{ user?.email }}</span>
+        <button class="btn btn-sm btn-outline-secondary ml-2" (click)="logout()" type=" button">Sair</button>
+      </form>
+      <ng-template #showLogin>
+        <span class="navbar-text">Acesse para configurar a eleição</span>
+        <button class="btn btn-sm btn-outline-secondary ml-2" (click)="login()" type=" button">Entrar</button>
+      </ng-template>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="text-center mb-4">Entre para configurar a eleição</h4>
+        <form [formGroup]="form" (ngSubmit)="login()">
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" id="email" formControlName="email">
+          </div>
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" class="form-control" id="password" formControlName="password">
+          </div>
+          <button type="submit" class="btn btn-secondary btn-block mt-3 btn-lg"
+            [disabled]="form.invalid">Entrar</button>
+          <a [routerLink]="['/p/initial']" class="btn btn-link text-center btn-block mt-2">Voltar para tela inicial</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
