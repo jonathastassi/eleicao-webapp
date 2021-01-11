@@ -15,7 +15,7 @@
           <a [routerLink]="[ '/p/poll-place' ]" class="nav-link">Local de Votação</a>
         </li>
         <li class="nav-item" routerLinkActive="active" *ngIf="auth.user | async as user;">
-          <a [routerLink]=" [ '/admin/election-configuration' ]" class="nav-link">Configuração da Eleição</a>
+          <a [routerLink]=" [ '/admin/election-configuration/list' ]" class="nav-link">Configuração da Eleição</a>
         </li>
       </ul>
 

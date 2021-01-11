@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
       )
       .then(() => {
         this.toastr.success('Entrada validada com sucesso.', 'Sucesso!');
-        this.router.navigateByUrl('admin/election-configuration');
+        this.router.navigateByUrl('admin/election-configuration/list');
       })
       .catch((e) => {
         this.toastr.error(

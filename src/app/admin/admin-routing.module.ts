@@ -1,8 +1,6 @@
-import { ElectionConfigurationComponent } from './pages/election-configuration/election-configuration.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 
 const routes: Routes = [
   {
@@ -11,13 +9,15 @@ const routes: Routes = [
   },
   {
     path: 'election-configuration',
-    component: ElectionConfigurationComponent,
-    canActivate: [AngularFireAuthGuard],
+    loadChildren: () =>
+      import(
+        './pages/election-configuration/election-configuration.module'
+      ).then((m) => m.ElectionConfigurationModule),
   },
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'election-configuration',
+    redirectTo: 'election-configuration/list',
   },
 ];
 
