@@ -6,12 +6,14 @@ import { MenuComponent } from './components/menu/menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageErrorInputComponent } from './components/message-error-input/message-error-input.component';
 import { InputCustomComponent } from './components/input-custom/input-custom.component';
+import { PageHeaderComponent } from './components/page-header/page-header.component';
 
 @NgModule({
   declarations: [
     MenuComponent,
     MessageErrorInputComponent,
     InputCustomComponent,
+    PageHeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,7 @@ import { InputCustomComponent } from './components/input-custom/input-custom.com
     ReactiveFormsModule,
     MessageErrorInputComponent,
     InputCustomComponent,
+    PageHeaderComponent,
   ],
 })
 export class SharedModule {}

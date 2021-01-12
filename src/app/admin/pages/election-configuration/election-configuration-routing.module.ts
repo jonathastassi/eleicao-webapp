@@ -1,3 +1,5 @@
+import { ElectionConfigurationSectionsComponent } from './election-configuration-sections/election-configuration-sections.component';
+import { ElectionConfigurationCandidatesComponent } from './election-configuration-candidates/election-configuration-candidates.component';
 import { ElectionConfigurationListComponent } from './election-configuration-list/election-configuration-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -13,6 +15,21 @@ const routes: Routes = [
   {
     path: 'form',
     component: ElectionConfigurationFormComponent,
+    canActivate: [AngularFireAuthGuard],
+  },
+  {
+    path: ':electionId/edit',
+    component: ElectionConfigurationFormComponent,
+    canActivate: [AngularFireAuthGuard],
+  },
+  {
+    path: ':electionId/candidates',
+    component: ElectionConfigurationCandidatesComponent,
+    canActivate: [AngularFireAuthGuard],
+  },
+  {
+    path: ':electionId/sections',
+    component: ElectionConfigurationSectionsComponent,
     canActivate: [AngularFireAuthGuard],
   },
 ];

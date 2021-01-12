@@ -1,9 +1,8 @@
-<div class="d-md-flex justify-content-between text-md-left text-center align-items-center">
-  <h2>Configuração da Eleição</h2>
-  <a class="btn btn-outline-success" [routerLink]="['/admin/election-configuration/form']">Criar
+<app-page-header title="Configuração da Eleição">
+  <a class="btn btn-outline-success" [routerLink]="['/admin/election-configuration/form']">
+    <i class="fas fa-plus mr-1"></i> Criar
     eleição</a>
-</div>
-<hr class="mt-4 mb-4">
+</app-page-header>
 
 <div *ngIf="(items$ | async) as items">
   <div class="row row-cols-1 row-cols-md-2" *ngIf="items.length > 0">
@@ -19,9 +18,15 @@
           <div class="row">
             <div class="col-md-12">
               <div class="d-md-flex justify-content-between">
-                <button type="button" class="btn btn-secondary btn-block mt-0">Candidatos</button>
-                <button type="button" class="btn btn-secondary btn-block mt-0 mx-md-2 my-md-0 my-2">Sessões</button>
-                <button type="button" class="btn btn-secondary btn-block mt-0">Editar</button>
+                <a class="btn btn-secondary btn-block mt-0"
+                  [routerLink]="['/admin/election-configuration', item.id, 'candidates']"><i
+                    class="fas fa-users mr-1"></i> Candidatos</a>
+                <a class="btn btn-secondary btn-block mt-0 mx-md-2 my-md-0 my-2"
+                  [routerLink]="['/admin/election-configuration', item.id, 'sections']"><i
+                    class="fas fa-list-ol mr-1"></i> Sessões</a>
+                <a class="btn btn-secondary btn-block mt-0"
+                  [routerLink]="['/admin/election-configuration', item.id, 'edit']"><i class="fas fa-edit mr-1"></i>
+                  Editar</a>
               </div>
             </div>
           </div>

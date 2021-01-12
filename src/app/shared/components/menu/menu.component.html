@@ -21,11 +21,13 @@
 
       <form class="form-inline" *ngIf="auth.user | async as user; else showLogin">
         <span class="navbar-text">{{ user?.email }}</span>
-        <button class="btn btn-sm btn-outline-secondary ml-2" (click)="logout()" type=" button">Sair</button>
+        <button class="btn btn-sm btn-outline-secondary ml-2" (click)="logout()" type=" button"><i
+            class="fas fa-door-closed mr-1"></i> Sair</button>
       </form>
       <ng-template #showLogin>
         <span class="navbar-text">Acesse para configurar a eleição</span>
-        <button class="btn btn-sm btn-outline-secondary ml-2" (click)="login()" type=" button">Entrar</button>
+        <button class="btn btn-sm btn-outline-secondary ml-2" (click)="login()" type=" button"><i
+            class="fas fa-sign-in-alt mr-1"></i> Entrar</button>
       </ng-template>
     </div>
   </div>
