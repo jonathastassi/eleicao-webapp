@@ -5,9 +5,14 @@ import { CommonModule } from '@angular/common';
 import { MenuComponent } from './components/menu/menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageErrorInputComponent } from './components/message-error-input/message-error-input.component';
+import { InputCustomComponent } from './components/input-custom/input-custom.component';
 
 @NgModule({
-  declarations: [MenuComponent, MessageErrorInputComponent],
+  declarations: [
+    MenuComponent,
+    MessageErrorInputComponent,
+    InputCustomComponent,
+  ],
   imports: [
     CommonModule,
     NgbModule,
@@ -20,6 +25,7 @@ import { MessageErrorInputComponent } from './components/message-error-input/mes
     FormsModule,
     ReactiveFormsModule,
     MessageErrorInputComponent,
+    InputCustomComponent,
   ],
 })
 export class SharedModule {}

@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { ngxLoadingAnimationTypes, NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,11 +17,21 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
     SharedModule,
     ToastrModule.forRoot(),
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.circleSwish,
+      backdropBackgroundColour: 'rgba(255,255,255,0.6)',
+      fullScreenBackdrop: true,
+      backdropBorderRadius: '4px',
+      primaryColour: '#ddd',
+      secondaryColour: '#ccc',
+      tertiaryColour: '#ddd',
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

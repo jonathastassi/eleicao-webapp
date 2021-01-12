@@ -1,7 +1,19 @@
-<div class="d-md-flex justify-content-between text-md-left text-center align-items-center">
-  <h2>Criando Eleição</h2>
-  <a class="btn btn-outline-secondary" [routerLink]="['/admin/election-configuration/list']">Voltar</a>
-</div>
-<hr class="mt-4 mb-4">
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="d-md-flex justify-content-between text-md-left text-center align-items-center">
+    <h2>Criando Eleição</h2>
+    <div>
+      <a class="btn btn-outline-secondary mr-2" [routerLink]="['/admin/election-configuration/list']">Voltar</a>
+      <button class="btn btn-secondary" [disabled]="form.invalid">Salvar</button>
+    </div>
+  </div>
+  <hr class="mt-4 mb-4">
 
-<button (click)="newelectio()">Nova Eleição</button>
+  <div class="row">
+    <div class="col-md-8">
+      <app-input-custom type="text" label="Título da eleição" formControlName="title"></app-input-custom>
+    </div>
+    <div class="col-md-4">
+      <app-input-custom type="date" label="Data da eleição" formControlName="date"></app-input-custom>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,6 @@
+<div class="form-group">
+  <label for="email" *ngIf="label">{{ label }}</label>
+  <input [type]="type" class="form-control" [ngClass]="{'is-invalid': errors}" id="email" [placeholder]="placeholder"
+    [formControl]="form" (input)="onChange($event.target.value)">
+  <app-message-error-input [errors]="errors"></app-message-error-input>
+</div>

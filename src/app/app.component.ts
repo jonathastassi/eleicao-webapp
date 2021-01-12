@@ -1,3 +1,4 @@
+import { LoadingService } from './shared/services/loading.service';
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,4 +9,12 @@ import firebase from 'firebase/app';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {}
+export class AppComponent {
+  showLoading = false;
+
+  constructor(public loadingService: LoadingService) {
+    this.loadingService.getIsLoading().subscribe((x) => {
+      this.showLoading = x;
+    });
+  }
+}

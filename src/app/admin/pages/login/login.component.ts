@@ -1,3 +1,4 @@
+import { LoadingService } from './../../../shared/services/loading.service';
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
     public auth: AngularFireAuth,
     public fb: FormBuilder,
     public router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private loadingService: LoadingService
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.loadingService.Open();
     this.auth
       .signInWithEmailAndPassword(
         this.form.get('email').value,
@@ -44,6 +47,9 @@ export class LoginComponent implements OnInit {
           'E-mail ou senha incorretos.',
           'Não foi possível entrar!'
         );
+      })
+      .finally(() => {
+        this.loadingService.Close();
       });
   }
 }

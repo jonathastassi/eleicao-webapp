@@ -1,3 +1,4 @@
+import { SharedModule } from './../../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -5,12 +6,11 @@ import { ElectionConfigurationRoutingModule } from './election-configuration-rou
 import { ElectionConfigurationListComponent } from './election-configuration-list/election-configuration-list.component';
 import { ElectionConfigurationFormComponent } from './election-configuration-form/election-configuration-form.component';
 
-
 @NgModule({
-  declarations: [ElectionConfigurationListComponent, ElectionConfigurationFormComponent],
-  imports: [
-    CommonModule,
-    ElectionConfigurationRoutingModule
-  ]
+  declarations: [
+    ElectionConfigurationListComponent,
+    ElectionConfigurationFormComponent,
+  ],
+  imports: [CommonModule, ElectionConfigurationRoutingModule, SharedModule],
 })
-export class ElectionConfigurationModule { }
+export class ElectionConfigurationModule {}
