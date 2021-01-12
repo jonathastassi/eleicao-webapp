@@ -1,5 +1,5 @@
 <div *ngIf="title" class="d-md-flex justify-content-between text-md-left text-center align-items-center">
-  <h2>{{ title }}</h2>
+  <h2>{{ title }} <small *ngIf="subtitle" class="text-muted">{{ subtitle }}</small></h2>
   <ng-content></ng-content>
 </div>
 <hr class="mt-4 mb-4">

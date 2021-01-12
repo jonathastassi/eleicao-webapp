@@ -10,6 +10,7 @@ import { ElectionService } from 'src/app/shared/services/election.service';
   styleUrls: ['./election-configuration-form.component.css'],
 })
 export class ElectionConfigurationFormComponent implements OnInit {
+
   form: FormGroup;
 
   constructor(

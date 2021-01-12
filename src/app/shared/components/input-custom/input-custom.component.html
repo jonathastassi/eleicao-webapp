@@ -1,6 +1,6 @@
 <div class="form-group">
   <label [for]="id" *ngIf="label">{{ label }}</label>
   <input [type]="type" class="form-control" [ngClass]="{'is-invalid': errors}" [id]="id" [placeholder]="placeholder"
-    [formControl]="form" (input)="onChange($event.target.value)">
+    [formControl]="form" (input)="onChange($event.target.value)" autocomplete="false">
   <app-message-error-input [errors]="errors"></app-message-error-input>
 </div>
