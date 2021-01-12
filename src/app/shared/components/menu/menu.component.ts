@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import firebase from 'firebase/app';
 
 @Component({
   selector: 'app-menu',
@@ -9,7 +8,7 @@ import firebase from 'firebase/app';
   styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent implements OnInit {
-  @Input() public user: firebase.User;
+  @Input() public user: any;
 
   public isMenuCollapsed = true;
 

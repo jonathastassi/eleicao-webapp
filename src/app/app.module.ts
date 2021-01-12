@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ngxLoadingAnimationTypes, NgxLoadingModule } from 'ngx-loading';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { ngxLoadingAnimationTypes, NgxLoadingModule } from 'ngx-loading';
     BrowserAnimationsModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     AngularFirestoreModule,
     FormsModule,
     ReactiveFormsModule,

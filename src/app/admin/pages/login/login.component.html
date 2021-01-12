@@ -4,8 +4,8 @@
       <div class="card-body">
         <h4 class="text-center mb-4">Entre para configurar a eleição</h4>
         <form [formGroup]="form" (ngSubmit)="login()">
-          <app-input-custom type="email" label="E-mail" formControlName="email"></app-input-custom>
-          <app-input-custom type="password" label="Senha" formControlName="password"></app-input-custom>
+          <app-input-custom type="email" id="email" label="E-mail" formControlName="email"></app-input-custom>
+          <app-input-custom type="password" id="password" label="Senha" formControlName="password"></app-input-custom>
           <button type="submit" class="btn btn-secondary btn-block mt-3 btn-lg" [disabled]="form.invalid">
             <i class="fas fa-sign-in-alt mr-2"></i> Entrar</button>
           <a [routerLink]="['/p/initial']" class="btn btn-link text-center btn-block mt-2">Voltar para tela inicial</a>

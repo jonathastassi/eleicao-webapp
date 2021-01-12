@@ -31,6 +31,7 @@ import {
   ],
 })
 export class InputCustomComponent implements ControlValueAccessor {
+  @Input() id = '';
   @Input() label = '';
   @Input() type = 'text';
   @Input() placeholder = '';

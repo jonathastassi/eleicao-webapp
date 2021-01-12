@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import firebase from 'firebase/app';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
