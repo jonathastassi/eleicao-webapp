@@ -1,4 +1,3 @@
-import { ElectionConfigurationSectionsComponent } from './election-configuration-sections/election-configuration-sections.component';
 import { ElectionConfigurationCandidatesComponent } from './election-configuration-candidates/election-configuration-candidates.component';
 import { ElectionConfigurationListComponent } from './election-configuration-list/election-configuration-list.component';
 import { NgModule } from '@angular/core';
@@ -29,8 +28,7 @@ const routes: Routes = [
   },
   {
     path: ':electionId/sections',
-    component: ElectionConfigurationSectionsComponent,
-    canActivate: [AngularFireAuthGuard],
+    loadChildren: () => import('./election-configuration-sections/election-configuration-sections.module').then(m => m.ElectionConfigurationSectionsModule)
   },
 ];
 

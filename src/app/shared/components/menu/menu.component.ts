@@ -17,10 +17,12 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
+    this.isMenuCollapsed = true;
     this.router.navigateByUrl('admin/login');
   }
 
   logout() {
+    this.isMenuCollapsed = true;
     this.router.navigateByUrl('p/initial');
     this.auth.signOut();
   }

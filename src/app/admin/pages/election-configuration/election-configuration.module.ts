@@ -6,14 +6,12 @@ import { ElectionConfigurationRoutingModule } from './election-configuration-rou
 import { ElectionConfigurationListComponent } from './election-configuration-list/election-configuration-list.component';
 import { ElectionConfigurationFormComponent } from './election-configuration-form/election-configuration-form.component';
 import { ElectionConfigurationCandidatesComponent } from './election-configuration-candidates/election-configuration-candidates.component';
-import { ElectionConfigurationSectionsComponent } from './election-configuration-sections/election-configuration-sections.component';
 
 @NgModule({
   declarations: [
     ElectionConfigurationListComponent,
     ElectionConfigurationFormComponent,
-    ElectionConfigurationCandidatesComponent,
-    ElectionConfigurationSectionsComponent,
+    ElectionConfigurationCandidatesComponent
   ],
   imports: [CommonModule, ElectionConfigurationRoutingModule, SharedModule],
 })

@@ -1,26 +1,30 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { LoadingService } from './loading.service';
-import { Candidate } from './../models/candidate';
+import { Section } from './../models/section';
+import { EStateSection } from '../enums/e-state-section.enum';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class CandidateService {
+export class SectionService {
   constructor(
     public firestore: AngularFirestore,
     private loadingService: LoadingService
   ) {}
 
-  insert(model: Candidate, electionId: string): Promise<void> {
+  insert(model: Section, electionId: string): Promise<void> {
     this.loadingService.Open();
     const id = this.firestore.createId();
     model.id = id;
-    model.name = model.name.toUpperCase();
+    model.sequence = 1;
+    model.state = EStateSection.Pending;
+    model.dataCreated = new Date();
+
     return this.firestore
-      .collection<Candidate>(`elections/${electionId}/candidates`)
+      .collection<Section>(`elections/${electionId}/sections`)
       .doc(id)
       .set({ ...model })
       .finally(() => {
@@ -28,11 +32,10 @@ export class CandidateService {
       });
   }
 
-  update(model: Candidate, electionId: string): Promise<void> {
+  update(model: Section, electionId: string): Promise<void> {
     this.loadingService.Open();
-    model.name = model.name.toUpperCase();
     return this.firestore
-      .collection<Candidate>(`elections/${electionId}/candidates`)
+      .collection<Section>(`elections/${electionId}/sections`)
       .doc(model.id)
       .update({ ...model })
       .finally(() => {
@@ -40,22 +43,11 @@ export class CandidateService {
       });
   }
 
-  delete(model: Candidate, electionId: string) {
+  getSectionsByElectionIdOrderBy(electionId: string): Observable<Section[]> {
     this.loadingService.Open();
     return this.firestore
-      .collection<Candidate>(`elections/${electionId}/candidates`)
-      .doc(model.id)
-      .delete()
-      .finally(() => {
-        this.loadingService.Close();
-      });
-  }
-
-  getCandidatesByElectionId(electionId: string): Observable<Candidate[]> {
-    this.loadingService.Open();
-    return this.firestore
-      .collection<Candidate>(`elections/${electionId}/candidates`, (x) =>
-        x.orderBy('name')
+      .collection<Section>(`elections/${electionId}/sections`, (x) =>
+        x.orderBy('dataCreated', 'desc')
       )
       .valueChanges()
       .pipe(

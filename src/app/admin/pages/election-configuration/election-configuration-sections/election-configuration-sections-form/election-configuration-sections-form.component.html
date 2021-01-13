@@ -1,0 +1,18 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <app-page-header title="Criando Sessão">
+    <div>
+      <a class="btn btn-outline-secondary mr-2" [routerLink]="['/admin/election-configuration', this.electionId, 'sections', 'list']"><i
+          class="fas fa-angle-double-left mr-1"></i> Voltar</a>
+      <button class="btn btn-secondary" [disabled]="form.invalid"><i class="fas fa-check mr-1"></i> Salvar</button>
+    </div>
+  </app-page-header>
+
+  <div class="row">
+    <div class="col-md-7">
+      <app-input-custom type="text" id="title" label="Nome da sessão" formControlName="title"></app-input-custom>
+    </div>
+    <div class="col-md-5">
+      <app-input-custom type="number" id="peopleToVote" label="Quantidade de pessoas para votar" formControlName="peopleToVote"></app-input-custom>
+    </div>
+  </div>
+</form>

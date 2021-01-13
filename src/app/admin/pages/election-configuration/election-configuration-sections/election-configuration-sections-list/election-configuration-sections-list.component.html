@@ -1,0 +1,107 @@
+<app-page-header title="Sessões da Eleição">
+  <div>
+    <a
+      class="btn btn-outline-secondary mr-2"
+      [routerLink]="['/admin/election-configuration/list']"
+      ><i class="fas fa-angle-double-left mr-1"></i> Voltar</a
+    >
+    <a
+      class="btn btn-outline-success"
+      [routerLink]="[
+        '/admin/election-configuration',
+        this.electionId,
+        'sections',
+        'form'
+      ]"
+    >
+      <i class="fas fa-plus mr-1"></i> Criar Sessão</a
+    >
+  </div>
+</app-page-header>
+
+<div *ngIf="items$ | async as items">
+  <div class="row row-cols-1 row-cols-md-2">
+    <div class="col mb-4" *ngFor="let item of items">
+      <div class="card h-100 bg-light text-center">
+        <h5 class="card-header">{{ item.title }}</h5>
+        <div class="card-body d-flex flex-column justify-content-between">
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <table class="table table-sm">
+                <tr>
+                  <th class="text-left">Seção</th>
+                  <td>{{ item.sequence }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Pessoas que votarão</th>
+                  <td>{{ item.peopleToVote }}</td>
+                </tr>
+                <tr *ngIf="item.state != stateSection.Pending">
+                  <th class="text-left">Votos computados</th>
+                  <td>-</td>
+                </tr>
+                <tr *ngIf="item.state != stateSection.Pending">
+                  <th class="text-left">Andamento</th>
+                  <td>-</td>
+                </tr>
+                <tr *ngIf="item.dateInitial">
+                  <th class="text-left">Início da votação</th>
+                  <td>{{ item.dateInitial }}</td>
+                </tr>
+                <tr *ngIf="item.dateFinal">
+                  <th class="text-left">Término da votação</th>
+                  <td>{{ item.dateFinal }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Status</th>
+                  <td>
+                    <!-- {{ (item.state == stateSection.Pending && "Aguardando ínicio") }}
+                    {{ (item.state == stateSection.Started && "Em andamento") }}
+                    {{ (item.state == stateSection.Pending && "Finalizado") }} -->
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div
+                class="d-md-flex justify-content-between"
+                *ngIf="item.state == stateSection.Pending"
+              >
+                <button class="btn btn-secondary btn-block mt-0 mr-md-1">
+                  <i class="fas fa-users mr-1"></i> Iniciar
+                </button>
+                <button class="btn btn-secondary btn-block mt-0 ml-md-1">
+                  <i class="fas fa-users mr-1"></i> Editar
+                </button>
+              </div>
+              <div
+                class="d-md-flex justify-content-between"
+                *ngIf="item.state == stateSection.Started"
+              >
+                <button class="btn btn-secondary btn-block mt-0 mr-md-1">
+                  <i class="fas fa-users mr-1"></i> Finalizar
+                </button>
+                <button class="btn btn-secondary btn-block mt-0 ml-md-1">
+                  <i class="fas fa-users mr-1"></i> Compartilhar link
+                </button>
+              </div>
+              <div
+                class="d-md-flex justify-content-between"
+                *ngIf="item.state == stateSection.Finalized"
+              >
+                <button class="btn btn-secondary btn-block mt-0 mr-md-1">
+                  <i class="fas fa-users mr-1"></i> Ver resultados
+                </button>
+                <button class="btn btn-secondary btn-block mt-0 ml-md-1">
+                  <i class="fas fa-users mr-1"></i> Reiniciar sessão
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
