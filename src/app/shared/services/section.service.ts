@@ -19,7 +19,6 @@ export class SectionService {
     this.loadingService.Open();
     const id = this.firestore.createId();
     model.id = id;
-    model.sequence = 1;
     model.state = EStateSection.Pending;
     model.dataCreated = new Date();
 
@@ -43,6 +42,20 @@ export class SectionService {
       });
   }
 
+  getSectionById(electionId: string, sectionId: string): Observable<Section> {
+    this.loadingService.Open();
+    return this.firestore
+      .collection<Section>(`elections/${electionId}/sections`)
+      .doc(sectionId)
+      .get()
+      .pipe(
+        map((x) => {
+          this.loadingService.Close();
+          return x.data();
+        })
+      );
+  }
+
   getSectionsByElectionIdOrderBy(electionId: string): Observable<Section[]> {
     this.loadingService.Open();
     return this.firestore
@@ -52,9 +65,29 @@ export class SectionService {
       .valueChanges()
       .pipe(
         map((x) => {
+          x.map(s => {
+            if (s.dateInitial) {
+              s.dateInitial = new Date(s.dateInitial['seconds'] * 1000);
+            }
+            if (s.dateFinal) {
+              s.dateFinal = new Date(s.dateFinal['seconds'] * 1000);
+            }
+            return s;
+          })
           this.loadingService.Close();
           return x;
         })
       );
+  }
+
+  delete(sectionId: string, electionId: string) {
+    this.loadingService.Open();
+    return this.firestore
+      .collection<Section>(`elections/${electionId}/sections`)
+      .doc(sectionId)
+      .delete()
+      .finally(() => {
+        this.loadingService.Close();
+      });
   }
 }

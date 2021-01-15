@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Section } from './../../../../../shared/models/section';
 import { SectionService } from './../../../../../shared/services/section.service';
 import { EStateSection } from 'src/app/shared/enums/e-state-section.enum';
+import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-election-configuration-sections-list',
@@ -18,7 +21,12 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
 
   public electionId: string;
 
-  constructor(public route: ActivatedRoute, public sectionService: SectionService) {
+  constructor(
+    public route: ActivatedRoute,
+    public sectionService: SectionService,
+    private toastr: ToastrService,
+    private router: Router
+  ) {
   }
 
   ngOnInit(): void {
@@ -26,5 +34,75 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
       this.electionId = paramMap.get('electionId');
       this.items$ = this.sectionService.getSectionsByElectionIdOrderBy(this.electionId);
     });
+  }
+
+  startSection(section: Section): void {
+    if (section.state == EStateSection.Pending) {
+      Swal.fire({
+        title: 'Deseja iniciar a sessão?',
+        text: 'Ao iniciar a sessão, a votação será liberada e será gerado um link para compartilhamento!',
+        icon: 'info',
+        showCancelButton: true,
+        buttonsStyling: false,
+        reverseButtons: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        customClass: {
+          confirmButton: 'btn btn-outline-info w-25 ml-1',
+          cancelButton: 'btn btn-outline-danger w-25 mr-1',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          section.state = EStateSection.Started;
+          section.dateInitial = new Date();
+          section.reference = uuidv4();
+          this.sectionService.update(section, this.electionId).then(
+            () => {
+              this.toastr.success('Sessão iniciada com sucesso.', 'Sucesso!');
+            },
+            (err) => {
+              this.toastr.error('Não foi possível iniciar.', 'Erro!');
+            }
+          );
+        }
+      });
+    }
+  }
+
+  stopSection(section: Section): void {
+    //TODO validar se falta pessoas para votar
+
+    if (section.state == EStateSection.Started) {
+      Swal.fire({
+        title: 'Deseja finalizar a sessão?',
+        text: 'Ao finalizar a sessão, a votação termina e o resultado estará disponível',
+        icon: 'info',
+        showCancelButton: true,
+        buttonsStyling: false,
+        reverseButtons: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        customClass: {
+          confirmButton: 'btn btn-outline-info w-25 ml-1',
+          cancelButton: 'btn btn-outline-danger w-25 mr-1',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          section.state = EStateSection.Finalized;
+          section.dateFinal = new Date();
+          section.reference = null;
+          this.sectionService.update(section, this.electionId).then(
+            () => {
+              this.toastr.success('Sessão finalizada com sucesso.', 'Sucesso!');
+            },
+            (err) => {
+              this.toastr.error('Não foi possível finalizar.', 'Erro!');
+            }
+          );
+        }
+      });
+    }
   }
 }

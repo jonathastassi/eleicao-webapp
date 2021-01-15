@@ -46,18 +46,24 @@
                 </tr>
                 <tr *ngIf="item.dateInitial">
                   <th class="text-left">Início da votação</th>
-                  <td>{{ item.dateInitial }}</td>
+                  <td>{{ item.dateInitial | date: 'dd/MM/y HH:mm:ss' }}</td>
                 </tr>
                 <tr *ngIf="item.dateFinal">
                   <th class="text-left">Término da votação</th>
-                  <td>{{ item.dateFinal }}</td>
+                  <td>{{ item.dateFinal | date: 'dd/MM/y HH:mm:ss' }}</td>
                 </tr>
                 <tr>
                   <th class="text-left">Status</th>
                   <td>
-                    <!-- {{ (item.state == stateSection.Pending && "Aguardando ínicio") }}
-                    {{ (item.state == stateSection.Started && "Em andamento") }}
-                    {{ (item.state == stateSection.Pending && "Finalizado") }} -->
+                    <span *ngIf="item.state == stateSection.Pending"
+                      >Aguardando início</span
+                    >
+                    <span *ngIf="item.state == stateSection.Started"
+                      >Iniciada</span
+                    >
+                    <span *ngIf="item.state == stateSection.Finalized"
+                      >Finalizada</span
+                    >
                   </td>
                 </tr>
               </table>
@@ -69,22 +75,33 @@
                 class="d-md-flex justify-content-between"
                 *ngIf="item.state == stateSection.Pending"
               >
-                <button class="btn btn-secondary btn-block mt-0 mr-md-1">
-                  <i class="fas fa-users mr-1"></i> Iniciar
-                </button>
-                <button class="btn btn-secondary btn-block mt-0 ml-md-1">
-                  <i class="fas fa-users mr-1"></i> Editar
+                <a
+                  class="btn btn-secondary btn-block mt-0 mr-md-1"
+                  [routerLink]="[
+                    '/admin/election-configuration',
+                    this.electionId,
+                    'sections',
+                    item.id,
+                    'edit'
+                  ]"
+                >
+                  <i class="fas fa-edit mr-1"></i> Editar
+                </a>
+                <button (click)="startSection(item)" class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mt-2">
+                  <i class="fas fa-play mr-1"></i> Iniciar
                 </button>
               </div>
               <div
                 class="d-md-flex justify-content-between"
                 *ngIf="item.state == stateSection.Started"
               >
-                <button class="btn btn-secondary btn-block mt-0 mr-md-1">
-                  <i class="fas fa-users mr-1"></i> Finalizar
+                <button
+                  class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mr-md-1"
+                >
+                  <i class="fas fa-share-alt mr-1"></i> Compartilhar link
                 </button>
-                <button class="btn btn-secondary btn-block mt-0 ml-md-1">
-                  <i class="fas fa-users mr-1"></i> Compartilhar link
+                <button (click)="stopSection(item)" class="btn btn-secondary btn-block mt-0 mt-2">
+                  <i class="far fa-stop-circle mr-1"></i> Finalizar
                 </button>
               </div>
               <div
@@ -94,8 +111,10 @@
                 <button class="btn btn-secondary btn-block mt-0 mr-md-1">
                   <i class="fas fa-users mr-1"></i> Ver resultados
                 </button>
-                <button class="btn btn-secondary btn-block mt-0 ml-md-1">
-                  <i class="fas fa-users mr-1"></i> Reiniciar sessão
+                <button
+                  class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mt-2"
+                >
+                  <i class="fas fa-sync-alt mr-1"></i> Reiniciar sessão
                 </button>
               </div>
             </div>

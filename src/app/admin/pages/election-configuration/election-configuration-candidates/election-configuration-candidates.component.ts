@@ -41,11 +41,13 @@ export class ElectionConfigurationCandidatesComponent implements OnInit {
   }
 
   edit(model: Candidate) {
+    //TODO não deixar trocar número do candidato após alguma sessão iniciada, somente nome
     this.form.patchValue(model);
     this.updateMode = true;
   }
 
   remove(model: Candidate) {
+    //TODO remover somente se nenhum sessão foi iniciada, se tiver alguma em andamento, não bloqueará mais
     Swal.fire({
       title: 'Deseja remover o candidato?',
       text: "Esse processo não poderá ser desfeito!",
