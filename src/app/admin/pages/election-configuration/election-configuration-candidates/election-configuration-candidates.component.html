@@ -6,10 +6,14 @@
   >
 </app-page-header>
 
+<div class="alert alert-warning" *ngIf="(election$ | async)?.state == stateElection.Finalized">
+  Eleição está finalizada
+</div>
+
 <div *ngIf="items$ | async as items">
-  <form [formGroup]="form" (ngSubmit)="save(items)">
+  <form [formGroup]="form" (ngSubmit)="save(items)" *ngIf="(election$ | async)?.state == stateElection.Started">
     <div class="form-row">
-      <div class="form-group col-md-7">
+      <div class="col-md-7">
         <app-input-custom
           type="text"
           id="name"
@@ -17,7 +21,7 @@
           formControlName="name"
         ></app-input-custom>
       </div>
-      <div class="form-group col-md-2">
+      <div class="col-md-2">
         <app-input-custom
           type="number"
           id="code"
@@ -25,7 +29,7 @@
           formControlName="code"
         ></app-input-custom>
       </div>
-      <div class="form-group col-md-3" *ngIf="!updateMode">
+      <div class="col-md-3" *ngIf="!updateMode">
         <button
           class="btn btn-outline-success btn-block button-form"
           type="submit"
@@ -35,7 +39,7 @@
           Adicionar
         </button>
       </div>
-      <div class="form-group col-md-3" *ngIf="updateMode">
+      <div class="col-md-3" *ngIf="updateMode">
         <div class="btn-group w-100" role="group">
           <button
             class="btn btn-outline-success button-form flex-fill"
@@ -58,14 +62,14 @@
     </div>
   </form>
 
-  <hr />
+  <hr *ngIf="(election$ | async)?.state == stateElection.Started"/>
 
   <table class="table table-hover table-striped">
     <thead>
       <tr>
         <th class="w-75">Nome do candidato</th>
         <th class="text-center">Número</th>
-        <th class="w-25 text-center">Ações</th>
+        <th class="w-25 text-center" *ngIf="(election$ | async)?.state == stateElection.Started">Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -75,7 +79,7 @@
       <tr *ngFor="let item of items">
         <td>{{ item.name }}</td>
         <td class="text-center">{{ item.code }}</td>
-        <td class="text-center">
+        <td class="text-center" *ngIf="(election$ | async)?.state == stateElection.Started">
           <div class="btn-group" role="group" aria-label="Basic example">
             <button class="btn btn-sm btn-outline-info" (click)="edit(item)">
               <i class="fa fa-edit"></i> Editar

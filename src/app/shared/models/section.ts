@@ -10,7 +10,6 @@ export class Section {
     public dataCreated: Date,
     public dateInitial: Date,
     public dateFinal: Date,
-    public reference: string,
     public candidatesExcluded: string[],
   ) {}
 }

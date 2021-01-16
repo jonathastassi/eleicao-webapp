@@ -6,7 +6,6 @@ import { SectionService } from './../../../../../shared/services/section.service
 import { EStateSection } from 'src/app/shared/enums/e-state-section.enum';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-election-configuration-sections-list',
@@ -20,6 +19,8 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
   public stateSection = EStateSection;
 
   public electionId: string;
+
+  public sectionIdHasOpened: string;
 
   constructor(
     public route: ActivatedRoute,
@@ -36,7 +37,16 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
     });
   }
 
-  startSection(section: Section): void {
+  startSection(section: Section, sections: Section[]): void {
+
+    const sectionsHasOpened = sections.filter(x => x.state == this.stateSection.Started);
+
+    if (sectionsHasOpened.length > 0) {
+      this.toastr.warning(`Finalize a sessão '${sectionsHasOpened[0]?.title}' para iniciar essa sessão.`, 'Já existe uma sessão iniciada!');
+      this.sectionIdHasOpened = sectionsHasOpened[0]?.id;
+      return;
+    }
+
     if (section.state == EStateSection.Pending) {
       Swal.fire({
         title: 'Deseja iniciar a sessão?',
@@ -56,7 +66,6 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
 
           section.state = EStateSection.Started;
           section.dateInitial = new Date();
-          section.reference = uuidv4();
           this.sectionService.update(section, this.electionId).then(
             () => {
               this.toastr.success('Sessão iniciada com sucesso.', 'Sucesso!');
@@ -92,9 +101,9 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
 
           section.state = EStateSection.Finalized;
           section.dateFinal = new Date();
-          section.reference = null;
           this.sectionService.update(section, this.electionId).then(
             () => {
+              this.sectionIdHasOpened = null;
               this.toastr.success('Sessão finalizada com sucesso.', 'Sucesso!');
             },
             (err) => {

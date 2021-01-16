@@ -9,7 +9,7 @@ const routes: Routes = [
     component: InitialComponent,
   },
   {
-    path: 'poll-place',
+    path: 'eleicao/:reference',
     component: PollPlaceComponent,
   },
 ];

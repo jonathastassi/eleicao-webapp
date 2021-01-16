@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
 import { CandidateService } from 'src/app/shared/services/candidate.service';
 import { Candidate } from './../../../../shared/models/candidate';
 import Swal from 'sweetalert2';
+import { Election } from 'src/app/shared/models/election';
+import { ElectionService } from 'src/app/shared/services/election.service';
+import { EStateElection } from 'src/app/shared/enums/e-state-election.enum';
 
 @Component({
   selector: 'app-election-configuration-candidates',
@@ -17,19 +20,22 @@ export class ElectionConfigurationCandidatesComponent implements OnInit {
   updateMode = false;
   private electionId: string;
   form: FormGroup;
+  public stateElection = EStateElection;
 
   items$: Observable<Candidate[]>;
+  election$: Observable<Election>;
 
   constructor(
     public fb: FormBuilder,
     public route: ActivatedRoute,
     public candidateService: CandidateService,
+    public electionService: ElectionService,
     private toastr: ToastrService
   ) {
     this.form = this.fb.group({
       id: [null],
       name: ['', [Validators.required]],
-      code: ['', [Validators.required]]
+      code: ['', [Validators.required, Validators.min(1)]]
     });
    }
 
@@ -37,6 +43,7 @@ export class ElectionConfigurationCandidatesComponent implements OnInit {
     this.route.paramMap.subscribe( paramMap => {
       this.electionId = paramMap.get('electionId');
       this.items$ = this.candidateService.getCandidatesByElectionId(this.electionId);
+      this.election$ = this.electionService.getElectionById(this.electionId);
     });
   }
 
@@ -85,7 +92,7 @@ export class ElectionConfigurationCandidatesComponent implements OnInit {
 
     const candidatesWithSameCode = candidates.filter(x => x.code == this.form.get('code').value && x.code != this.form.get('id').value);
 
-    if (candidatesWithSameCode.length > 0) {
+    if (candidatesWithSameCode.length > 0 && candidatesWithSameCode[0]?.id != this.form.get('id').value) {
       this.toastr.warning('Número já usado em outro candidato.', 'Atenção!');
       return;
     }

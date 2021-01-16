@@ -1,11 +1,21 @@
 <form [formGroup]="form" (ngSubmit)="save()">
-  <app-page-header title="Criando Eleição">
+  <app-page-header [title]="electionId ? 'Alterando Eleição' : 'Criando Eleição'">
     <div>
-      <a class="btn btn-outline-secondary mr-2" [routerLink]="['/admin/election-configuration/list']"><i
+      <a class="btn btn-outline-secondary mr-1" [routerLink]="['/admin/election-configuration/list']"><i
           class="fas fa-angle-double-left mr-1"></i> Voltar</a>
-      <button class="btn btn-secondary" [disabled]="form.invalid"><i class="fas fa-check mr-1"></i> Salvar</button>
+      <button type="button" (click)="finalizeElection()" *ngIf="electionId" class="btn btn-outline-danger" [disabled]="form.get('state').value == stateElection.Finalized">
+        <i class="far fa-stop-circle"></i> Finalizar Eleição
+      </button>
+      <button class="btn btn-secondary ml-1" [disabled]="form.invalid || form.get('state').value == stateElection.Finalized">
+        <i class="fas fa-check mr-1"></i> Salvar
+      </button>
+
     </div>
   </app-page-header>
+
+  <div class="alert alert-warning" *ngIf="form.get('state').value == stateElection.Finalized">
+    Eleição está finalizada
+  </div>
 
   <div class="row">
     <div class="col-md-8">

@@ -1,1 +1,57 @@
-<p>poll-place works!</p>
+<div>
+  <div class="jumbotron py-3 w-100">
+    <h3 class="text-center">{{ election.title }}</h3>
+  </div>
+
+  <div class="card text-center" *ngIf="(section$ | async) as section">
+    <h5 class="card-header">{{ section.title }}</h5>
+    <div class="card-body" *ngIf="(candidates$ | async) as candidates; else loadingCandidates">
+      <h5 class="card-title">Clique no nome do candidato que você deseja votar</h5>
+      <button type="button" class="btn btn-outline-secondary btn-block mb-1" *ngFor="let candidate of candidates">{{ candidate.code }} - {{ candidate.name }}</button>
+    </div>
+
+    <ng-template #loadingCandidates>
+      <p>Aguarde! Listando os candidatos.</p>
+    </ng-template>
+  </div>
+
+  <br>
+
+  <!-- <div class="card text-center">
+    <h5 class="card-header">Votação para presidente</h5>
+    <div class="card-body">
+      <p class="card-title">Total de votos: <strong>30</strong></p>
+      <p class="card-title">Candidato com mais votos: <strong>João</strong></p>
+      <p class="card-title">Confira o resultado final da sessão</p>
+
+      <div class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Votos</th>
+              <th>%</th>
+            </tr>
+          </thead>
+          <tr>
+            <th>João</th>
+            <td>30</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class="card text-center">
+    <h5 class="card-header">Obrigado por votar</h5>
+    <div class="card-body">
+      <p class="card-title">Aguarde a finalização da votação para ver o resultado dessa sessão.</p>
+      <p class="card-title">Se houver outra sessão, aguarde o início da mesma.</p>
+    </div>
+  </div> -->
+</div>
+
+<ng-template #emptyTemplate>
+  <div class="alert alert-danger">Eleição não existe ou já foi finalizada.</div>
+</ng-template>

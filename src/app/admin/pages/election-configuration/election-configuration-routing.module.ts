@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { ElectionConfigurationFormComponent } from './election-configuration-form/election-configuration-form.component';
+import { ElectionResolver } from '../../resolvers/election.resolver';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     path: ':electionId/edit',
     component: ElectionConfigurationFormComponent,
     canActivate: [AngularFireAuthGuard],
+    resolve: { model: ElectionResolver },
   },
   {
     path: ':electionId/candidates',

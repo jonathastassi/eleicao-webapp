@@ -22,7 +22,7 @@
 <div *ngIf="items$ | async as items">
   <div class="row row-cols-1 row-cols-md-2">
     <div class="col mb-4" *ngFor="let item of items">
-      <div class="card h-100 bg-light text-center">
+      <div class="card h-100 bg-light text-center" [ngClass]="{'border-danger': item.id == sectionIdHasOpened}">
         <h5 class="card-header">{{ item.title }}</h5>
         <div class="card-body d-flex flex-column justify-content-between">
           <div class="row">
@@ -87,7 +87,7 @@
                 >
                   <i class="fas fa-edit mr-1"></i> Editar
                 </a>
-                <button (click)="startSection(item)" class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mt-2">
+                <button (click)="startSection(item, items)" class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mt-2">
                   <i class="fas fa-play mr-1"></i> Iniciar
                 </button>
               </div>
@@ -100,7 +100,7 @@
                 >
                   <i class="fas fa-share-alt mr-1"></i> Compartilhar link
                 </button>
-                <button (click)="stopSection(item)" class="btn btn-secondary btn-block mt-0 mt-2">
+                <button (click)="stopSection(item)" class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mt-2">
                   <i class="far fa-stop-circle mr-1"></i> Finalizar
                 </button>
               </div>

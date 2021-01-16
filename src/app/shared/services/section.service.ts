@@ -56,6 +56,21 @@ export class SectionService {
       );
   }
 
+  getSectionStarted(electionId: string): Observable<Section> {
+    this.loadingService.Open();
+    return this.firestore
+      .collection<Section>(`elections/${electionId}/sections`, x => x.where('state', '==', EStateSection.Started))
+      .valueChanges()
+      .pipe(
+        map(
+          x => {
+            this.loadingService.Close();
+            return x[0];
+          }
+        )
+      )
+  }
+
   getSectionsByElectionIdOrderBy(electionId: string): Observable<Section[]> {
     this.loadingService.Open();
     return this.firestore

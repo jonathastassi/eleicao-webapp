@@ -4,8 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { EStateSection } from 'src/app/shared/enums/e-state-section.enum';
 import { SectionService } from './../../../../../shared/services/section.service';
-import { Candidate } from 'src/app/shared/models/candidate';
-import { Observable } from 'rxjs';
 import { Section } from 'src/app/shared/models/section';
 import Swal from 'sweetalert2';
 
@@ -38,7 +36,6 @@ export class ElectionConfigurationSectionsFormComponent implements OnInit {
       candidatesExcluded: [[]],
       dateInitial: [null],
       dateFinal: [null],
-      reference: [null],
     });
   }
 

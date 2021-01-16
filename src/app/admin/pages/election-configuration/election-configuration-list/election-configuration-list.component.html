@@ -1,10 +1,13 @@
 <app-page-header title="Configuração da Eleição">
-  <a class="btn btn-outline-success" [routerLink]="['/admin/election-configuration/form']">
-    <i class="fas fa-plus mr-1"></i> Criar
-    eleição</a>
+  <a
+    class="btn btn-outline-success"
+    [routerLink]="['/admin/election-configuration/form']"
+  >
+    <i class="fas fa-plus mr-1"></i> Criar eleição</a
+  >
 </app-page-header>
 
-<div *ngIf="(items$ | async) as items">
+<div *ngIf="items$ | async as items">
   <div class="row row-cols-1 row-cols-md-2" *ngIf="items.length > 0">
     <div class="col mb-4" *ngFor="let item of items">
       <div class="card h-100 bg-light text-center">
@@ -12,21 +15,56 @@
         <div class="card-body d-flex flex-column justify-content-between">
           <div class="row">
             <div class="col-md-12 form-group">
-              <strong>Data:</strong> {{ item.date | date: 'dd/MM/y' }}
+              <table class="table table-sm">
+                <tr>
+                  <th class="text-left">Data</th>
+                  <td>{{ item.date | date: "dd/MM/y" }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Status</th>
+                  <td>
+                    <span *ngIf="item.state == stateElection.Started"
+                      >Iniciada</span
+                    >
+                    <span *ngIf="item.state == stateElection.Finalized"
+                      >Finalizada</span
+                    >
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="d-md-flex justify-content-between">
-                <a class="btn btn-secondary btn-block mt-0"
-                  [routerLink]="['/admin/election-configuration', item.id, 'candidates']"><i
-                    class="fas fa-users mr-1"></i> Candidatos</a>
-                <a class="btn btn-secondary btn-block mt-0 mx-md-2 my-md-0 my-2"
-                  [routerLink]="['/admin/election-configuration', item.id, 'sections', 'list']"><i
-                    class="fas fa-list-ol mr-1"></i> Sessões</a>
-                <a class="btn btn-secondary btn-block mt-0"
-                  [routerLink]="['/admin/election-configuration', item.id, 'edit']"><i class="fas fa-edit mr-1"></i>
-                  Editar</a>
+                <a
+                  class="btn btn-secondary btn-block mt-0"
+                  [routerLink]="[
+                    '/admin/election-configuration',
+                    item.id,
+                    'candidates'
+                  ]"
+                  ><i class="fas fa-users mr-1"></i> Candidatos</a
+                >
+                <a
+                  class="btn btn-secondary btn-block mt-0 mx-md-2 my-md-0 my-2"
+                  [routerLink]="[
+                    '/admin/election-configuration',
+                    item.id,
+                    'sections',
+                    'list'
+                  ]"
+                  ><i class="fas fa-list-ol mr-1"></i> Sessões</a
+                >
+                <a
+                  class="btn btn-secondary btn-block mt-0"
+                  [routerLink]="[
+                    '/admin/election-configuration',
+                    item.id,
+                    'edit'
+                  ]"
+                  ><i class="fas fa-edit mr-1"></i> Editar</a
+                >
               </div>
             </div>
           </div>
