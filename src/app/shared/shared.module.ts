@@ -24,6 +24,7 @@ import { PageHeaderComponent } from './components/page-header/page-header.compon
   ],
   exports: [
     MenuComponent,
+    NgbModule,
     FormsModule,
     ReactiveFormsModule,
     MessageErrorInputComponent,

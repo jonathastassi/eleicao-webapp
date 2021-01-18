@@ -23,6 +23,7 @@
     "@angular/router": "~11.0.5",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@ng-bootstrap/ng-bootstrap": "^8.0.1",
+    "@webcrypto/storage": "^2.0.2",
     "bootstrap": "^4.5.0",
     "firebase": "^7.0 || ^8.0",
     "ngx-loading": "^8.0.0",

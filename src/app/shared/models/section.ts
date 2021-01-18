@@ -1,4 +1,6 @@
+import { DocumentReference } from "@angular/fire/firestore";
 import { EStateSection } from "../enums/e-state-section.enum";
+import { Candidate } from './candidate';
 
 export class Section {
   constructor(
@@ -11,5 +13,7 @@ export class Section {
     public dateInitial: Date,
     public dateFinal: Date,
     public candidatesExcluded: string[],
+    public votes: Candidate[],
+    public votes_count: number,
   ) {}
 }

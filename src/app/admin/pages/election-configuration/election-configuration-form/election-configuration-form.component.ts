@@ -71,6 +71,8 @@ export class ElectionConfigurationFormComponent implements OnInit {
   }
 
   finalizeElection() {
+    //TODO verificar se tem sessão em andamento
+    
     if (this.form.get('state').value == EStateElection.Started) {
       Swal.fire({
         title: 'Deseja finalizar a eleição?',

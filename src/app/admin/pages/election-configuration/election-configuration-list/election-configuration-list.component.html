@@ -14,7 +14,7 @@
         <h5 class="card-header">{{ item.title }}</h5>
         <div class="card-body d-flex flex-column justify-content-between">
           <div class="row">
-            <div class="col-md-12 form-group">
+            <div class="col-md-12">
               <table class="table table-sm">
                 <tr>
                   <th class="text-left">Data</th>
@@ -38,7 +38,7 @@
             <div class="col-md-12">
               <div class="d-md-flex justify-content-between">
                 <a
-                  class="btn btn-secondary btn-block mt-0"
+                  class="btn btn-secondary btn-block mt-0 mb-2"
                   [routerLink]="[
                     '/admin/election-configuration',
                     item.id,
@@ -47,7 +47,7 @@
                   ><i class="fas fa-users mr-1"></i> Candidatos</a
                 >
                 <a
-                  class="btn btn-secondary btn-block mt-0 mx-md-2 my-md-0 my-2"
+                  class="btn btn-secondary btn-block mt-0 ml-md-2 mb-2"
                   [routerLink]="[
                     '/admin/election-configuration',
                     item.id,
@@ -56,8 +56,15 @@
                   ]"
                   ><i class="fas fa-list-ol mr-1"></i> Sessões</a
                 >
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="d-md-flex justify-content-between">
+                <button (click)="sharedLink(item)" class="btn btn-secondary btn-block mt-0 mb-2">
+                  <i class="fas fa-share-alt mr-1"></i> Compartilhar link
+                </button>
                 <a
-                  class="btn btn-secondary btn-block mt-0"
+                  class="btn btn-secondary btn-block mt-0 ml-md-2 mb-2"
                   [routerLink]="[
                     '/admin/election-configuration',
                     item.id,

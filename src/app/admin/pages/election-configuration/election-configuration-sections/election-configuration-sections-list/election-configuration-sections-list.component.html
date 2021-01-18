@@ -22,14 +22,19 @@
 <div *ngIf="items$ | async as items">
   <div class="row row-cols-1 row-cols-md-2">
     <div class="col mb-4" *ngFor="let item of items">
-      <div class="card h-100 bg-light text-center" [ngClass]="{'border-danger': item.id == sectionIdHasOpened}">
+      <div class="card h-100 bg-light text-center" [ngClass]="{'border-danger': item.id == sectionIdHasOpened, 'border-success': item.peopleToVote == item.votes?.length && item.state == stateSection.Started}">
         <h5 class="card-header">{{ item.title }}</h5>
         <div class="card-body d-flex flex-column justify-content-between">
           <div class="row">
             <div class="col-md-12 form-group">
+
+              <div class="alert alert-warning" *ngIf="item.peopleToVote == item.votes?.length && item.state == stateSection.Started">
+                Todos já votaram. Finalize a sessão.
+              </div>
+
               <table class="table table-sm">
                 <tr>
-                  <th class="text-left">Seção</th>
+                  <th class="text-left">Sessão</th>
                   <td>{{ item.sequence }}</td>
                 </tr>
                 <tr>
@@ -38,11 +43,13 @@
                 </tr>
                 <tr *ngIf="item.state != stateSection.Pending">
                   <th class="text-left">Votos computados</th>
-                  <td>-</td>
+                  <td>{{ item.votes?.length || '-' }}</td>
                 </tr>
                 <tr *ngIf="item.state != stateSection.Pending">
                   <th class="text-left">Andamento</th>
-                  <td>-</td>
+                  <td style="vertical-align: middle;">
+                    <ngb-progressbar height="1.3rem" [value]="getPercentageVotes(item)" type="dark" [striped]="item.state == stateSection.Started" [animated]="item.state == stateSection.Started"><i>{{ getPercentageVotes(item) }}%</i></ngb-progressbar>
+                  </td>
                 </tr>
                 <tr *ngIf="item.dateInitial">
                   <th class="text-left">Início da votação</th>
@@ -95,11 +102,6 @@
                 class="d-md-flex justify-content-between"
                 *ngIf="item.state == stateSection.Started"
               >
-                <button
-                  class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mr-md-1"
-                >
-                  <i class="fas fa-share-alt mr-1"></i> Compartilhar link
-                </button>
                 <button (click)="stopSection(item)" class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mt-2">
                   <i class="far fa-stop-circle mr-1"></i> Finalizar
                 </button>
@@ -112,6 +114,7 @@
                   <i class="fas fa-users mr-1"></i> Ver resultados
                 </button>
                 <button
+                  (click)="restartSection(item)"
                   class="btn btn-secondary btn-block mt-0 ml-md-1 mt-md-0 mt-2"
                 >
                   <i class="fas fa-sync-alt mr-1"></i> Reiniciar sessão

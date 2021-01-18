@@ -1,46 +1,119 @@
-<div>
+<div *ngIf="election">
   <div class="jumbotron py-3 w-100">
     <h3 class="text-center">{{ election.title }}</h3>
   </div>
 
-  <div class="card text-center" *ngIf="(section$ | async) as section">
-    <h5 class="card-header">{{ section.title }}</h5>
-    <div class="card-body" *ngIf="(candidates$ | async) as candidates; else loadingCandidates">
-      <h5 class="card-title">Clique no nome do candidato que você deseja votar</h5>
-      <button type="button" class="btn btn-outline-secondary btn-block mb-1" *ngFor="let candidate of candidates">{{ candidate.code }} - {{ candidate.name }}</button>
-    </div>
-
-    <ng-template #loadingCandidates>
-      <p>Aguarde! Listando os candidatos.</p>
-    </ng-template>
-  </div>
-
-  <br>
-
-  <!-- <div class="card text-center">
-    <h5 class="card-header">Votação para presidente</h5>
-    <div class="card-body">
-      <p class="card-title">Total de votos: <strong>30</strong></p>
-      <p class="card-title">Candidato com mais votos: <strong>João</strong></p>
-      <p class="card-title">Confira o resultado final da sessão</p>
-
-      <div class="table-responsive">
-        <table class="table table-sm">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Votos</th>
-              <th>%</th>
-            </tr>
-          </thead>
-          <tr>
-            <th>João</th>
-            <td>30</td>
-          </tr>
-        </table>
+  <div *ngIf="section$ | async as section">
+    <ng-container *ngIf="section.state == stateSection.Started">
+      <div
+        *ngIf="section.peopleToVote == section.votes_count; else voteAllowed"
+      >
+        <div
+          class="card text-center"
+          *ngIf="(section$ | async)?.id == this.session_voted; else readyToVote"
+        >
+          <h5 class="card-header">Votação concluída</h5>
+          <div class="card-body">
+            <p class="card-title">
+              Aguarde a finalização da votação para ver o resultado dessa
+              sessão.
+            </p>
+            <p class="card-title">
+              Se houver outra sessão, aguarde o início da mesma.
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <ng-template #voteAllowed>
+        <ng-container *ngIf="section.state == stateSection.Started">
+          <div
+            class="card text-center"
+            *ngIf="
+              (section$ | async)?.id == this.session_voted;
+              else readyToVote
+            "
+          >
+            <h5 class="card-header">Você já votou nessa sessão</h5>
+            <div class="card-body">
+              <p class="card-title">
+                Aguarde a finalização da votação para ver o resultado dessa
+                sessão.
+              </p>
+              <p class="card-title">
+                Se houver outra sessão, aguarde o início da mesma.
+              </p>
+            </div>
+          </div>
+
+          <ng-template #readyToVote>
+            <div class="card text-center" *ngIf="section$ | async as section">
+              <h5 class="card-header">{{ section.title }}</h5>
+              <div
+                class="card-body"
+                *ngIf="
+                  candidates$ | async as candidates;
+                  else loadingCandidates
+                "
+              >
+                <h5 class="card-title">
+                  Clique no nome do candidato que você deseja votar
+                </h5>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary btn-block mb-1"
+                  (click)="confirmVote(candidate, section)"
+                  *ngFor="let candidate of candidates"
+                >
+                  {{ candidate.code }} - {{ candidate.name }}
+                </button>
+              </div>
+
+              <ng-template #loadingCandidates>
+                <p>Aguarde! Listando os candidatos.</p>
+              </ng-template>
+            </div>
+          </ng-template>
+        </ng-container>
+      </ng-template>
+    </ng-container>
+
+    <ng-container *ngIf="section.state == stateSection.Finalized">
+      <div class="card text-center">
+        <h5 class="card-header">{{ section.title }}</h5>
+        <div class="card-body">
+          <p class="card-title">Total de votos: <strong>30</strong></p>
+          <p class="card-title">
+            Candidato com mais votos: <strong>João</strong>
+          </p>
+          <p class="card-title">Confira o resultado final da sessão</p>
+
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Votos</th>
+                  <th>%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of (candidates$ | async)">
+                  <th>{{ item.name }}</th>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
+
+  <br />
+
+  <!--
   <br>
 
   <div class="card text-center">
