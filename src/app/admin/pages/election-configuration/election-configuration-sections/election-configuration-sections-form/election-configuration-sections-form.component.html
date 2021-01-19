@@ -11,14 +11,33 @@
         ]"
         ><i class="fas fa-angle-double-left mr-1"></i> Voltar</a
       >
-      <button type="button" (click)="remove()" *ngIf="sectionId" class="btn btn-outline-danger" [disabled]="form.get('state').value != stateSection.Pending">
+      <button
+        type="button"
+        (click)="remove()"
+        *ngIf="sectionId && election.state == stateElection.Started"
+        class="btn btn-outline-danger"
+        [disabled]="form.get('state').value != stateSection.Pending"
+      >
         <i class="fas fa-trash"></i> Excluir
       </button>
-      <button class="btn btn-secondary ml-1" [disabled]="form.invalid && form.get('state').value != stateSection.Pending">
+      <button
+        *ngIf="election.state == stateElection.Started"
+        class="btn btn-secondary ml-1"
+        [disabled]="
+          form.invalid && form.get('state').value != stateSection.Pending
+        "
+      >
         <i class="fas fa-check mr-1"></i> Salvar
       </button>
     </div>
   </app-page-header>
+
+  <div
+    class="alert alert-warning"
+    *ngIf="election.state == stateElection.Finalized"
+  >
+    Eleição está finalizada
+  </div>
 
   <div class="row">
     <div class="col-md-7 form-group">

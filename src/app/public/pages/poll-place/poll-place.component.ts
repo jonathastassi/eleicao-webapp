@@ -116,5 +116,3 @@ export class PollPlaceComponent implements OnInit, OnDestroy {
   }
 }
 
-//TODO mostrar resultado
-//TODO mostrar votação fechada

@@ -67,9 +67,11 @@ export class SectionService {
           x => {
             const section = x[0];
 
-            this.getVotesOfSession(electionId, section.id).subscribe(
+            this.getVotesOfSession(electionId, section?.id).subscribe(
               (votes) => {
-                section.votes_count = votes.length;
+                if (section) {
+                  section.votes_count = votes.length;
+                }
               }
             );
 

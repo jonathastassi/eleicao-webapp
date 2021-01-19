@@ -41,6 +41,13 @@ export class ElectionConfigurationFormComponent implements OnInit {
       if (this.electionId) {
         const model: Election = Object.assign({}, this.route.snapshot.data.model);
         this.form.patchValue({ ...model });
+
+        if (this.form.get('state').value == EStateElection.Finalized) {
+          setTimeout(() => {
+            this.form.controls['title'].disable();
+            this.form.controls['date'].disable();
+          }, 500);
+        }
       }
     });
   }
@@ -72,7 +79,7 @@ export class ElectionConfigurationFormComponent implements OnInit {
 
   finalizeElection() {
     //TODO verificar se tem sessão em andamento
-    
+
     if (this.form.get('state').value == EStateElection.Started) {
       Swal.fire({
         title: 'Deseja finalizar a eleição?',

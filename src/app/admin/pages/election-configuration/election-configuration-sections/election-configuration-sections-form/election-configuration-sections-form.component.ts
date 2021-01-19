@@ -6,6 +6,10 @@ import { EStateSection } from 'src/app/shared/enums/e-state-section.enum';
 import { SectionService } from './../../../../../shared/services/section.service';
 import { Section } from 'src/app/shared/models/section';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
+import { Election } from 'src/app/shared/models/election';
+import { EStateElection } from 'src/app/shared/enums/e-state-election.enum';
+import { ElectionService } from 'src/app/shared/services/election.service';
 
 @Component({
   selector: 'app-election-configuration-sections-form',
@@ -20,12 +24,17 @@ export class ElectionConfigurationSectionsFormComponent implements OnInit {
 
   form: FormGroup;
 
+  electionSubscription: Subscription;
+  election: Election;
+  public stateElection = EStateElection;
+
   constructor(
     public route: ActivatedRoute,
     private fb: FormBuilder,
     private toastr: ToastrService,
     private router: Router,
-    public sectionService: SectionService
+    public sectionService: SectionService,
+    public electionService: ElectionService,
   ) {
     this.form = this.fb.group({
       id: [null],
@@ -55,6 +64,19 @@ export class ElectionConfigurationSectionsFormComponent implements OnInit {
           }, 500);
         }
       }
+
+      this.electionSubscription = this.electionService.getElectionById(this.electionId).subscribe(
+        x => {
+          this.election = x;
+
+          if (this.election.state == EStateElection.Finalized) {
+            setTimeout(() => {
+              this.form.controls['title'].disable();
+              this.form.controls['peopleToVote'].disable();
+            }, 500);
+          }
+        }
+      );
     });
   }
 

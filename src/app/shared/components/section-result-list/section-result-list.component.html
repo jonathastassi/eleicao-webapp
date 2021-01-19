@@ -1,0 +1,23 @@
+<p class="card-title">Total de votos: <strong>{{ this.section.votes.length }}</strong></p>
+<p class="card-title">Votos para ser elegível (50% + 1): <strong>{{ this.criterioSumVote }}</strong></p>
+
+<div class="table-responsive mt-4">
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Votos</th>
+        <th>%</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of resultList" [ngClass]="{'text-success': item.quantity >= criterioSumVote}">
+        <th>{{ item.code }}</th>
+        <th>{{ item.name }}</th>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.percentage }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageErrorInputComponent } from './components/message-error-input/message-error-input.component';
 import { InputCustomComponent } from './components/input-custom/input-custom.component';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
+import { SectionResultListComponent } from './components/section-result-list/section-result-list.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { PageHeaderComponent } from './components/page-header/page-header.compon
     MessageErrorInputComponent,
     InputCustomComponent,
     PageHeaderComponent,
+    SectionResultListComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { PageHeaderComponent } from './components/page-header/page-header.compon
     MessageErrorInputComponent,
     InputCustomComponent,
     PageHeaderComponent,
+    SectionResultListComponent
   ],
 })
 export class SharedModule {}
