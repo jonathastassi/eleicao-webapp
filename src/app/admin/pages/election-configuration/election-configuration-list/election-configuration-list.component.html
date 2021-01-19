@@ -23,10 +23,10 @@
                 <tr>
                   <th class="text-left">Status</th>
                   <td>
-                    <span *ngIf="item.state == stateElection.Started"
+                    <span *ngIf="item.state == stateElection.Started" class="text-success font-weight-bold"
                       >Iniciada</span
                     >
-                    <span *ngIf="item.state == stateElection.Finalized"
+                    <span *ngIf="item.state == stateElection.Finalized" class="text-danger font-weight-bold"
                       >Finalizada</span
                     >
                   </td>

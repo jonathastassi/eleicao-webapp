@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CandidateService } from 'src/app/shared/services/candidate.service';
 import { Candidate } from './../../../../shared/models/candidate';
 import Swal from 'sweetalert2';
 import { Election } from 'src/app/shared/models/election';
 import { ElectionService } from 'src/app/shared/services/election.service';
 import { EStateElection } from 'src/app/shared/enums/e-state-election.enum';
+import { SectionService } from './../../../../shared/services/section.service';
 
 @Component({
   selector: 'app-election-configuration-candidates',
   templateUrl: './election-configuration-candidates.component.html',
   styleUrls: ['./election-configuration-candidates.component.css']
 })
-export class ElectionConfigurationCandidatesComponent implements OnInit {
+export class ElectionConfigurationCandidatesComponent implements OnInit, OnDestroy {
 
   updateMode = false;
   private electionId: string;
@@ -25,11 +26,15 @@ export class ElectionConfigurationCandidatesComponent implements OnInit {
   items$: Observable<Candidate[]>;
   election$: Observable<Election>;
 
+  hasSessionOpenedOrFinalized = false;
+  sectionSubscription: Subscription;
+
   constructor(
     public fb: FormBuilder,
     public route: ActivatedRoute,
     public candidateService: CandidateService,
     public electionService: ElectionService,
+    public sectionService: SectionService,
     private toastr: ToastrService
   ) {
     this.form = this.fb.group({
@@ -39,22 +44,26 @@ export class ElectionConfigurationCandidatesComponent implements OnInit {
     });
    }
 
+  ngOnDestroy(): void {
+    this.sectionSubscription.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.route.paramMap.subscribe( paramMap => {
       this.electionId = paramMap.get('electionId');
       this.items$ = this.candidateService.getCandidatesByElectionId(this.electionId);
       this.election$ = this.electionService.getElectionById(this.electionId);
+
+      this.sectionSubscription = this.sectionService.hasSessionOpenedOrFinalized(this.electionId).subscribe(x => this.hasSessionOpenedOrFinalized = x);
     });
   }
 
   edit(model: Candidate) {
-    //TODO não deixar trocar número do candidato após alguma sessão iniciada, somente nome
     this.form.patchValue(model);
     this.updateMode = true;
   }
 
   remove(model: Candidate) {
-    //TODO remover somente se nenhum sessão foi iniciada, se tiver alguma em andamento, não bloqueará mais
     Swal.fire({
       title: 'Deseja remover o candidato?',
       text: "Esse processo não poderá ser desfeito!",

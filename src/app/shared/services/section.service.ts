@@ -142,4 +142,20 @@ export class SectionService {
         this.loadingService.Close();
       });
   }
+
+  hasSessionOpenedOrFinalized(electionId: string): Observable<boolean> {
+    return this.firestore
+      .collection<Section>(`elections/${electionId}/sections`, x => x.where('state', 'in', [EStateSection.Started, EStateSection.Finalized]))
+      .valueChanges()
+      .pipe(
+        map(
+          x => {
+            if (x.length) {
+              return true;
+            }
+            return false
+          }
+        )
+      )
+  }
 }

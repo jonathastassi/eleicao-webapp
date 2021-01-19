@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -6,17 +6,22 @@ import { EStateElection } from 'src/app/shared/enums/e-state-election.enum';
 import { ElectionService } from 'src/app/shared/services/election.service';
 import { Election } from 'src/app/shared/models/election';
 import Swal from 'sweetalert2';
+import { SectionService } from './../../../../shared/services/section.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-election-configuration-form',
   templateUrl: './election-configuration-form.component.html',
   styleUrls: ['./election-configuration-form.component.css'],
 })
-export class ElectionConfigurationFormComponent implements OnInit {
+export class ElectionConfigurationFormComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   public electionId: string;
   public stateElection = EStateElection;
+
+  hasSessionOpenedOrFinalized = false;
+  sectionSubscription: Subscription;
 
   constructor(
     public electionService: ElectionService,
@@ -24,6 +29,7 @@ export class ElectionConfigurationFormComponent implements OnInit {
     public router: Router,
     private toastr: ToastrService,
     public route: ActivatedRoute,
+    public sectionService: SectionService
   ) {
     this.form = this.fb.group({
       id: [null],
@@ -34,11 +40,19 @@ export class ElectionConfigurationFormComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.sectionSubscription) {
+      this.sectionSubscription.unsubscribe();
+    }
+  }
+
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
       this.electionId = paramMap.get('electionId');
 
       if (this.electionId) {
+        this.sectionSubscription = this.sectionService.hasSessionOpenedOrFinalized(this.electionId).subscribe(x => this.hasSessionOpenedOrFinalized = x);
+
         const model: Election = Object.assign({}, this.route.snapshot.data.model);
         this.form.patchValue({ ...model });
 
@@ -78,7 +92,10 @@ export class ElectionConfigurationFormComponent implements OnInit {
   }
 
   finalizeElection() {
-    //TODO verificar se tem sessão em andamento
+    if (this.hasSessionOpenedOrFinalized) {
+      this.toastr.warning('Existem sessões em andamento, finalize todas para continuar', 'Atenção!');
+      return;
+    }
 
     if (this.form.get('state').value == EStateElection.Started) {
       Swal.fire({

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Section } from './../../../../../shared/models/section';
@@ -11,13 +11,14 @@ import { ElectionService } from 'src/app/shared/services/election.service';
 import { Election } from 'src/app/shared/models/election';
 import { SharedLinkService } from './../../../../../shared/services/shared-link.service';
 import { EStateElection } from 'src/app/shared/enums/e-state-election.enum';
+import { CandidateService } from './../../../../../shared/services/candidate.service';
 
 @Component({
   selector: 'app-election-configuration-sections-list',
   templateUrl: './election-configuration-sections-list.component.html',
   styleUrls: ['./election-configuration-sections-list.component.css'],
 })
-export class ElectionConfigurationSectionsListComponent implements OnInit {
+export class ElectionConfigurationSectionsListComponent implements OnInit, OnDestroy {
   items$: Observable<Section[]>;
 
   public stateSection = EStateSection;
@@ -29,8 +30,11 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
   public sectionResultSelected: Section;
 
   electionSubscription: Subscription;
+  candidateSubscription: Subscription;
   election: Election;
   public stateElection = EStateElection;
+
+  hasCandidate: boolean;
 
   constructor(
     public route: ActivatedRoute,
@@ -38,8 +42,13 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
     public electionService: ElectionService,
     private toastr: ToastrService,
     private modalService: NgbModal,
-    private sharedLinkService: SharedLinkService
+    private sharedLinkService: SharedLinkService,
+    public candidateService: CandidateService
   ) {}
+
+  ngOnDestroy(): void {
+    this.electionSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
@@ -52,10 +61,23 @@ export class ElectionConfigurationSectionsListComponent implements OnInit {
           this.election = x;
         }
       );
+      this.candidateSubscription = this.candidateService.getCandidatesByElectionId(this.electionId).subscribe(
+        x => {
+          this.hasCandidate = x.length > 0;
+        }
+      );
     });
   }
 
   startSection(section: Section, sections: Section[]): void {
+    if (!this.hasCandidate) {
+      this.toastr.warning(
+        `Cadastre candidatos para poder iniciar a sessão.`,
+        'Candidatos não encontrados!'
+      );
+      return;
+    }
+
     const sectionsHasOpened = sections.filter(
       (x) => x.state == this.stateSection.Started
     );

@@ -18,7 +18,6 @@ export class ElectionConfigurationListComponent {
 
   constructor(
     public electionService: ElectionService,
-    private toastr: ToastrService,
     private sharedLinkService: SharedLinkService,
   ) {
     this.items$ = electionService.getAllOrderByDateAsc();
@@ -28,5 +27,3 @@ export class ElectionConfigurationListComponent {
     this.sharedLinkService.sharedLink(election);
   }
 }
-
-//TODO Tratar quando não tiver eleições cadastradas

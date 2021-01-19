@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -16,7 +16,7 @@ import { ElectionService } from 'src/app/shared/services/election.service';
   templateUrl: './election-configuration-sections-form.component.html',
   styleUrls: ['./election-configuration-sections-form.component.css'],
 })
-export class ElectionConfigurationSectionsFormComponent implements OnInit {
+export class ElectionConfigurationSectionsFormComponent implements OnInit, OnDestroy {
   public electionId: string;
   public sectionId: string;
 
@@ -46,6 +46,9 @@ export class ElectionConfigurationSectionsFormComponent implements OnInit {
       dateInitial: [null],
       dateFinal: [null],
     });
+  }
+  ngOnDestroy(): void {
+    this.electionSubscription.unsubscribe();
   }
 
   ngOnInit(): void {

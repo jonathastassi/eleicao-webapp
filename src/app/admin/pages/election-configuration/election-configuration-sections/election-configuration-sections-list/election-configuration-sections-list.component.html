@@ -6,7 +6,7 @@
       ><i class="fas fa-angle-double-left mr-1"></i> Voltar</a
     >
     <a
-      *ngIf="election.state == stateElection.Started"
+      *ngIf="election?.state == stateElection.Started"
       class="btn btn-outline-success"
       [routerLink]="[
         '/admin/election-configuration',
@@ -22,7 +22,7 @@
 
 <div
   class="alert alert-warning"
-  *ngIf="election.state == stateElection.Finalized"
+  *ngIf="election?.state == stateElection.Finalized"
 >
   Eleição está finalizada
 </div>
@@ -90,13 +90,13 @@
                 <tr>
                   <th class="text-left">Status</th>
                   <td>
-                    <span *ngIf="item.state == stateSection.Pending"
+                    <span *ngIf="item.state == stateSection.Pending" class="text-warning font-weight-bold"
                       >Aguardando início</span
                     >
-                    <span *ngIf="item.state == stateSection.Started"
+                    <span *ngIf="item.state == stateSection.Started" class="text-success font-weight-bold"
                       >Iniciada</span
                     >
-                    <span *ngIf="item.state == stateSection.Finalized"
+                    <span *ngIf="item.state == stateSection.Finalized" class="text-danger font-weight-bold"
                       >Finalizada</span
                     >
                   </td>
