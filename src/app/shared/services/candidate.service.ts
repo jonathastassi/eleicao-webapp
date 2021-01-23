@@ -54,12 +54,15 @@ export class CandidateService {
   getCandidatesByElectionId(electionId: string): Observable<Candidate[]> {
     this.loadingService.Open();
     return this.firestore
-      .collection<Candidate>(`elections/${electionId}/candidates`, (x) =>
-        x.orderBy('name')
-      )
+      .collection<Candidate>(`elections/${electionId}/candidates`)
       .valueChanges()
       .pipe(
         map((x) => {
+          const c = new Intl.Collator();
+          x.sort((a, b) => {
+            return c.compare(a.name, b.name);
+          })
+
           this.loadingService.Close();
           return x;
         })
